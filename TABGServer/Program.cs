@@ -10,7 +10,7 @@ class TABGServer
 {
     static void Main()
     {
-        ushort port = 9700;
+        ushort port = 9701;
         ushort maxClients = 256;
         Console.WriteLine("TABG COMMUNITY SERVER v1 STARTED");
 
@@ -22,13 +22,13 @@ class TABGServer
         bool oneTimeClientStart = false;
 
         address.Port = port;
-        address.SetIP("127.0.0.1");
+        address.SetIP("0.0.0.0");
 
         server.Create(address, maxClients);
 
         Event netEvent;
 
-        PlayerConncurencyHandler manager = new();
+        PlayerConcurencyHandler manager = new();
         WeaponConcurrencyHandler weaponConcurrencyHandler = new();
 
         while (!Console.KeyAvailable)

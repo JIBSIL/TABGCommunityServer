@@ -22,7 +22,7 @@ namespace TABG
             this.executor = executor;
         }
 
-        public void Handle()
+        public void Handle(PlayerConcurencyHandler playerConncurencyHandler)
         {
             this.notification = null;
             this.packetData = new byte[1];
@@ -112,6 +112,68 @@ namespace TABG
                     this.shouldSendPacket = true;
                     this.code = ClientEventCode.PlayerLootRecieved;
                     this.notification = "You got the default kit!";
+                    return;
+                case "coords":
+                    var executorData = playerConncurencyHandler.Players[executor];
+                    var loc = executorData.Location;
+                    string notif = "COORDS- X: " + loc.X.ToString() + " Y: " + loc.Y.ToString() + " Z: " + loc.Z.ToString();
+                    this.packetData = new PlayerHandler().SendNotification(executor, notif);
+                    this.code = ClientEventCode.PlayerDead;
+                    this.shouldSendPacket = true;
+                    return;
+                case "broadcast":
+                    if (parts.Length != 2)
+                    {
+                        Console.WriteLine("Ignoring invalid command!");
+                        return;
+                    }
+                    foreach (var item in playerConncurencyHandler.Players)
+                    {
+                        item.Value.PendingBroadcastPackets.Add(new Packet(ClientEventCode.PlayerDead, new PlayerHandler().SendNotification(item.Value.Id, "ANNOUNCE: " + parts[1])));
+                    }
+                    return;
+                case "revive":
+                    this.shouldSendPacket = false;
+                    foreach (var item in playerConncurencyHandler.Players)
+                    {
+                        item.Value.PendingBroadcastPackets.Add(new Packet(ClientEventCode.ReviveState, new PlayerHandler().RevivePlayer(executor)));
+                    }
+                    this.notification = "You were revived by SERVER";
+                    return;
+                case "gamestate":
+                    if (parts.Length < 2)
+                    {
+                        Console.WriteLine("Ignoring invalid command!");
+                        return;
+                    }
+
+                    // broadcast instead of send
+                    this.code = ClientEventCode.GameStateChanged;
+
+                    switch (parts[1])
+                    {
+                        case "waiting":
+                            this.packetData = GameHandler.SetWaitingForPlayersState();
+                            break;
+                        case "started":
+                            this.packetData = GameHandler.SetStarted();
+                            break;
+                        case "countdown":
+                            this.packetData = GameHandler.SetCountDown(Int32.Parse(parts[2]));
+                            break;
+                        case "flying":
+                            this.packetData = GameHandler.SetFlying(Byte.Parse(parts[2]));
+                            break;
+                    }
+
+                    foreach (var item in playerConncurencyHandler.Players)
+                    {
+                        item.Value.PendingBroadcastPackets.Add(new Packet(this.code, this.packetData));
+                    }
+
+                    this.packetData = new PlayerHandler().SendNotification(executor, "GAME STATE CHANGED!");
+                    this.code = ClientEventCode.PlayerDead;
+                    this.shouldSendPacket = true;
                     return;
                 default: return;
             }

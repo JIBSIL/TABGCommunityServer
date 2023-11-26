@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace TABG
 {
-    internal class PlayerConncurencyHandler
+    internal class PlayerConcurencyHandler
     {
         public Dictionary<int, Player> Players = new Dictionary<int, Player>();
         public byte LastID = 0;
 
-        public PlayerConncurencyHandler() { }
+        public PlayerConcurencyHandler() { }
 
         public void AddPlayer(Player player)
         {
