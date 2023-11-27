@@ -137,8 +137,45 @@ namespace TABG
                     foreach (var item in playerConncurencyHandler.Players)
                     {
                         item.Value.PendingBroadcastPackets.Add(new Packet(ClientEventCode.ReviveState, new PlayerHandler().RevivePlayer(executor)));
+                        item.Value.PendingBroadcastPackets.Add(new Packet(ClientEventCode.PlayerHealed, new PlayerHandler().SetPlayerHealth(executor, 100f)));
                     }
                     this.notification = "You were revived by SERVER";
+                    return;
+                case "heal":
+                    float health = 100f;
+                    if (parts.Length == 2)
+                    {
+                        try
+                        {
+                            health = float.Parse(parts[1]);
+                        } catch(Exception error)
+                        {
+                            Console.WriteLine("Parsing error!" + error.Message);
+                            return;
+                        }
+                    }
+                    foreach (var item in playerConncurencyHandler.Players)
+                    {
+                        item.Value.PendingBroadcastPackets.Add(new Packet(ClientEventCode.PlayerHealed, new PlayerHandler().SetPlayerHealth(executor, health)));
+                    }
+                    this.notification = "Healed!";
+                    return;
+                case "state":
+                    try
+                    {
+                        TABGPlayerState playerState = (TABGPlayerState)Byte.Parse(parts[1]);
+                        float playerHealth = float.Parse(parts[2]);
+
+                        foreach (var item in playerConncurencyHandler.Players)
+                        {
+                            item.Value.PendingBroadcastPackets.Add(new Packet(ClientEventCode.PlayerEnteredChunk, new PlayerHandler().SimulateChunkEnter(playerConncurencyHandler, executor, playerState, playerHealth)));
+                        }
+                        this.notification = "Player state changed!";
+                    } catch(Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                        this.notification = "Player state change ERROR!";
+                    }
                     return;
                 case "gamestate":
                     if (parts.Length < 2)

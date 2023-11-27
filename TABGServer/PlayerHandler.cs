@@ -596,6 +596,7 @@ namespace TABG
         {
             byte[] sendByte = new byte[256];
             Player playerOutside;
+            Player playerOutside2;
             byte attackerOutside;
 
             using (MemoryStream writerMemoryStream = new MemoryStream(sendByte))
@@ -604,19 +605,25 @@ namespace TABG
                 {
                     // attacker id
                     var attacker = binaryReader.ReadByte();
-                    binaryWriterStream.Write(attacker);
                     attackerOutside = attacker;
 
                     // victim id
                     var victim = binaryReader.ReadByte();
-                    binaryWriterStream.Write(victim);
                     Player player = playerConcurrencyHandler.Players[victim];
                     playerOutside = player;
+
+                    Player player2 = playerConcurrencyHandler.Players[attacker];
+                    playerOutside2 = player;
+
+                    binaryWriterStream.Write(victim);
+                    binaryWriterStream.Write(attacker);
 
                     // health
                     var health = binaryReader.ReadSingle();
                     binaryWriterStream.Write(health);
                     player.Health = health;
+
+                    Console.WriteLine("Attacker: " + attacker + ". Victim: " + victim + ". New health value: " + health);
 
                     // direction
                     var x = binaryReader.ReadSingle();
@@ -649,18 +656,86 @@ namespace TABG
                 }
             }
 
-            foreach (var item in playerConcurrencyHandler.Players)
-            {
-                if (item.Key == attackerOutside)
-                {
-                    continue;
-                }
+            playerOutside.PendingBroadcastPackets.Add(new Packet(ClientEventCode.PlayerDamaged, sendByte));
+            playerOutside2.PendingBroadcastPackets.Add(new Packet(ClientEventCode.PlayerDamaged, sendByte));
 
-                // broadcast to ALL players but the shooter
-                item.Value.PendingBroadcastPackets.Add(new Packet(ClientEventCode.PlayerDamaged, sendByte));
-            }
+            //foreach (var item in playerConcurrencyHandler.Players)
+            //{
+            //    if (item.Key == attackerOutside)
+            //    {
+            //        continue;
+            //    }
+
+            // broadcast to ALL players but the shooter
+            //    item.Value.PendingBroadcastPackets.Add(new Packet(ClientEventCode.PlayerDamaged, sendByte));
+            //}
 
             return;
+        }
+
+        public byte[] SetPlayerHealth(byte playerID, float newHealth)
+        {
+            byte[] sendByte = new byte[128];
+            using (MemoryStream writerMemoryStream = new MemoryStream(sendByte))
+            {
+                using (BinaryWriter binaryWriterStream = new BinaryWriter(writerMemoryStream))
+                {
+                    binaryWriterStream.Write(playerID);
+                    binaryWriterStream.Write(newHealth);
+                }
+            }
+            return sendByte;
+        }
+
+        public byte[] SimulateChunkEnter(PlayerConcurencyHandler playerConcurrencyHandler, byte playerIndex, TABGPlayerState playerState, float health)
+        {
+            byte[] sendByte = new byte[1024];
+            using (MemoryStream writerMemoryStream = new MemoryStream(sendByte))
+            {
+                using (BinaryWriter binaryWriterStream = new BinaryWriter(writerMemoryStream))
+                {
+                    // player index
+                    binaryWriterStream.Write(playerIndex);
+                    // player state (transcended etc)
+                    binaryWriterStream.Write((byte)playerState);
+                    // health
+                    binaryWriterStream.Write(health);
+                    // is player downed
+                    binaryWriterStream.Write(false);
+                    // is skydiving
+                    binaryWriterStream.Write(false);
+                    // gear data
+                    var player = playerConcurrencyHandler.Players[playerIndex];
+                    binaryWriterStream.Write((Int32)player.GearData.Length);
+                    for(int i = 0; i < player.GearData.Length; i++)
+                    {
+                        binaryWriterStream.Write(player.GearData[i]);
+                    }
+                    // equipment (not tracked by concurrency handler yet)
+                    binaryWriterStream.Write((byte)0);
+                    // attachments (also not tracked)
+                    binaryWriterStream.Write((byte)0);
+                    // blessings
+                    binaryWriterStream.Write((Int32)0);
+                    binaryWriterStream.Write((Int32)0);
+                    binaryWriterStream.Write((Int32)0);
+                    // should spawn car?
+                    binaryWriterStream.Write((byte)DrivingState.None);
+                }
+            }
+            return sendByte;
+        }
+
+        public byte[] RequestHealthState(PlayerConcurencyHandler playerConcurrencyHandler, BinaryReader binaryReader)
+        {
+
+            // player's index
+            var playerIndex = binaryReader.ReadByte();
+            // new health
+            var newHealth = binaryReader.ReadSingle();
+
+            // same packet as heal
+            return SetPlayerHealth(playerIndex, newHealth);
         }
 
         public byte[] BroadcastPlayerJoin(byte playerID, string playerName, int[] gearData)

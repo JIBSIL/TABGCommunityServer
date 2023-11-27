@@ -160,11 +160,15 @@ namespace TABG
                         case ClientEventCode.RequestAirplaneDrop:
                             this.BroadcastPacket(ClientEventCode.PlayerAirplaneDropped, new PlayerHandler().RequestAirplaneDrop(binaryReader), true);
                             return;
+                        // damage event breaks damage for some reason
                         case ClientEventCode.DamageEvent:
                             new PlayerHandler().PlayerDamagedEvent(concurrencyHandler, binaryReader);
                             return;
                         case ClientEventCode.RequestBlessing:
                             this.BroadcastPacket(ClientEventCode.BlessingRecieved, new PlayerHandler().RequestBlessingEvent(binaryReader), true);
+                            return;
+                        case ClientEventCode.RequestHealthState:
+                            this.BroadcastPacket(ClientEventCode.PlayerHealthStateChanged, new PlayerHandler().RequestHealthState(concurrencyHandler, binaryReader), true);
                             return;
                         default:
                             return;
@@ -270,8 +274,31 @@ namespace TABG
                     // --- END WEAPONS SECTION ---
 
                     // --- CARS SECTION ---
-                    // number of cars to spawn, just leave this empty...
+
+                    // THIS IS CONFUSING AND BROKEN!!!
+                    binaryWriterStream.Write((Int32)1);
+                    // car id
+                    binaryWriterStream.Write((Int32)1);
+                    // car index
                     binaryWriterStream.Write((Int32)0);
+                    // seats
+                    binaryWriterStream.Write((Int32)4);
+                    for(int i = 0; i < 4; i++)
+                    {
+                        binaryWriterStream.Write((Int32)i);
+                    }
+                    // parts of car
+                    binaryWriterStream.Write((byte)4);
+                    for (int i = 0; i < 4; i++)
+                    {
+                        // index
+                        binaryWriterStream.Write((byte)i);
+                        // health
+                        binaryWriterStream.Write(100f);
+                        // name
+                        binaryWriterStream.Write("Test");
+                    }
+
                     // --- END CARS SECTION ---
 
                     // time of day
