@@ -6,7 +6,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TABG
+namespace TABGCommunityServer
 {
     internal class PlayerHandler
     {
@@ -23,7 +23,7 @@ namespace TABG
                     binaryWriterStream.Write((Byte)victim);
                     // player who killed the player
                     binaryWriterStream.Write((Byte)killer);
-                    // spectator value: 255 = don't respawn. 254 = go to boss. other ints = spectate that player
+                    // spectator value: 255 = don't respawn. 254 = go to boss. other ints = spectate that player 
                     binaryWriterStream.Write((Byte)254);
                     // victim length
                     binaryWriterStream.Write((Int32)(victimName.Length));
@@ -264,7 +264,7 @@ namespace TABG
                 }
 
                 // broadcast to ALL players but the shooter
-                item.Value.PendingBroadcastPackets.Add(new Packet(ClientEventCode.PlayerFire, sendByte));
+                item.Value.PendingBroadcastPackets.Add(new Packet(EventCode.PlayerFire, sendByte));
             }
 
             //return sendByte;
@@ -656,8 +656,8 @@ namespace TABG
                 }
             }
 
-            playerOutside.PendingBroadcastPackets.Add(new Packet(ClientEventCode.PlayerDamaged, sendByte));
-            playerOutside2.PendingBroadcastPackets.Add(new Packet(ClientEventCode.PlayerDamaged, sendByte));
+            playerOutside.PendingBroadcastPackets.Add(new Packet(EventCode.PlayerDamaged, sendByte));
+            playerOutside2.PendingBroadcastPackets.Add(new Packet(EventCode.PlayerDamaged, sendByte));
 
             //foreach (var item in playerConcurrencyHandler.Players)
             //{
