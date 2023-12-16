@@ -1,4 +1,4 @@
-﻿namespace TABG;
+﻿namespace TABGCommunityServer;
 
 using System;
 using System.Diagnostics.Tracing;
@@ -73,7 +73,7 @@ class TABGServer
                         byte[] array = new byte[netEvent.Packet.Length];
                         netEvent.Packet.CopyTo(array);
                         
-                        var code = (ClientEventCode)array[0];
+                        var code = (EventCode)array[0];
                         var buffer = new byte[array.Length - 1];
 
                         Array.Copy(array, 1, buffer, 0, buffer.Length);

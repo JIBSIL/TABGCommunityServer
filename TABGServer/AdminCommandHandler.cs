@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TABG
+namespace TABGCommunityServer
 {
     internal class AdminCommandHandler
     {
         private string command;
         public bool shouldSendPacket = false;
-        public ClientEventCode code;
+        public EventCode code;
         public string? notification;
         public byte[] packetData;
         private byte executor;
@@ -66,7 +66,7 @@ namespace TABG
 
                         this.shouldSendPacket = true;
                         this.packetData = new PlayerHandler().KillPlayer(victim, killer, victimName);
-                        this.code = ClientEventCode.PlayerDead;
+                        this.code = EventCode.PlayerDead;
 
                         return;
 
@@ -93,7 +93,7 @@ namespace TABG
 
                         this.shouldSendPacket = true;
                         this.packetData = new PlayerHandler().GiveItem(itemid, amount);
-                        this.code = ClientEventCode.PlayerLootRecieved;
+                        this.code = EventCode.PlayerLootRecieved;
 
                         return;
                     } catch(Exception error)
@@ -104,13 +104,13 @@ namespace TABG
                 case "notification":
                     this.packetData = new PlayerHandler().SendNotification(executor, "WELCOME - RUNNING COMMUNITY SERVER V1.TEST");
                     this.shouldSendPacket = true;
-                    this.code = ClientEventCode.PlayerDead;
+                    this.code = EventCode.PlayerDead;
                     return;
                 case "kit":
                     Console.WriteLine("Giving kit to player " + executor);
                     this.packetData = new PlayerHandler().GiveGear();
                     this.shouldSendPacket = true;
-                    this.code = ClientEventCode.PlayerLootRecieved;
+                    this.code = EventCode.PlayerLootRecieved;
                     this.notification = "You got the default kit!";
                     return;
                 case "coords":
@@ -118,7 +118,7 @@ namespace TABG
                     var loc = executorData.Location;
                     string notif = "COORDS- X: " + loc.X.ToString() + " Y: " + loc.Y.ToString() + " Z: " + loc.Z.ToString();
                     this.packetData = new PlayerHandler().SendNotification(executor, notif);
-                    this.code = ClientEventCode.PlayerDead;
+                    this.code = EventCode.PlayerDead;
                     this.shouldSendPacket = true;
                     return;
                 case "broadcast":
@@ -129,15 +129,15 @@ namespace TABG
                     }
                     foreach (var item in playerConncurencyHandler.Players)
                     {
-                        item.Value.PendingBroadcastPackets.Add(new Packet(ClientEventCode.PlayerDead, new PlayerHandler().SendNotification(item.Value.Id, "ANNOUNCE: " + parts[1])));
+                        item.Value.PendingBroadcastPackets.Add(new Packet(EventCode.PlayerDead, new PlayerHandler().SendNotification(item.Value.Id, "ANNOUNCE: " + parts[1])));
                     }
                     return;
                 case "revive":
                     this.shouldSendPacket = false;
                     foreach (var item in playerConncurencyHandler.Players)
                     {
-                        item.Value.PendingBroadcastPackets.Add(new Packet(ClientEventCode.ReviveState, new PlayerHandler().RevivePlayer(executor)));
-                        item.Value.PendingBroadcastPackets.Add(new Packet(ClientEventCode.PlayerHealed, new PlayerHandler().SetPlayerHealth(executor, 100f)));
+                        item.Value.PendingBroadcastPackets.Add(new Packet(EventCode.ReviveState, new PlayerHandler().RevivePlayer(executor)));
+                        item.Value.PendingBroadcastPackets.Add(new Packet(EventCode.PlayerHealed, new PlayerHandler().SetPlayerHealth(executor, 100f)));
                     }
                     this.notification = "You were revived by SERVER";
                     return;
@@ -156,7 +156,7 @@ namespace TABG
                     }
                     foreach (var item in playerConncurencyHandler.Players)
                     {
-                        item.Value.PendingBroadcastPackets.Add(new Packet(ClientEventCode.PlayerHealed, new PlayerHandler().SetPlayerHealth(executor, health)));
+                        item.Value.PendingBroadcastPackets.Add(new Packet(EventCode.PlayerHealed, new PlayerHandler().SetPlayerHealth(executor, health)));
                     }
                     this.notification = "Healed!";
                     return;
@@ -168,7 +168,7 @@ namespace TABG
 
                         foreach (var item in playerConncurencyHandler.Players)
                         {
-                            item.Value.PendingBroadcastPackets.Add(new Packet(ClientEventCode.PlayerEnteredChunk, new PlayerHandler().SimulateChunkEnter(playerConncurencyHandler, executor, playerState, playerHealth)));
+                            item.Value.PendingBroadcastPackets.Add(new Packet(EventCode.PlayerEnteredChunk, new PlayerHandler().SimulateChunkEnter(playerConncurencyHandler, executor, playerState, playerHealth)));
                         }
                         this.notification = "Player state changed!";
                     } catch(Exception e)
@@ -185,7 +185,7 @@ namespace TABG
                     }
 
                     // broadcast instead of send
-                    this.code = ClientEventCode.GameStateChanged;
+                    this.code = EventCode.GameStateChanged;
 
                     switch (parts[1])
                     {
@@ -209,7 +209,7 @@ namespace TABG
                     }
 
                     this.packetData = new PlayerHandler().SendNotification(executor, "GAME STATE CHANGED!");
-                    this.code = ClientEventCode.PlayerDead;
+                    this.code = EventCode.PlayerDead;
                     this.shouldSendPacket = true;
                     return;
                 default: return;

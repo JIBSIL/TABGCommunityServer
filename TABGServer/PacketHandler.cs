@@ -8,7 +8,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TABG
+namespace TABGCommunityServer
 {
     internal class PacketHandler
     {
@@ -23,11 +23,11 @@ namespace TABG
             this.weaponConcurrencyHandler = weaponConcurrencyHandler;
         }
 
-        public void Handle(ClientEventCode code, byte[] buffer)
+        public void Handle(EventCode code, byte[] buffer)
         {
-            string? stringCode = Enum.GetName(typeof(ClientEventCode), code);
+            string? stringCode = Enum.GetName(typeof(EventCode), code);
             if ((stringCode != "TABGPing") && (stringCode != "PlayerUpdate")) {
-                Console.WriteLine("Handling packet: " + Enum.GetName(typeof(ClientEventCode), code));
+                Console.WriteLine("Handling packet: " + Enum.GetName(typeof(EventCode), code));
             }
 
             using (MemoryStream memoryStream = new MemoryStream(buffer))
@@ -36,7 +36,7 @@ namespace TABG
                 {
                     switch(code)
                     {
-                        case ClientEventCode.RoomInit:
+                        case EventCode.RoomInit:
                             string roomName = "DecompileServer";
                             byte newIndex = concurrencyHandler.LastID++;
 
@@ -79,10 +79,10 @@ namespace TABG
                             }
 
                             Console.WriteLine("Sending request RESPONSE to client!");
-                            this.SendMessageToServer(ClientEventCode.RoomInitRequestResponse, sendByte, true);
+                            this.SendMessageToServer(EventCode.RoomInitRequestResponse, sendByte, true);
 
                             Console.WriteLine("Sending Login RESPONSE to client!");
-                            this.SendMessageToServer(ClientEventCode.Login, SendJoinMessageToServer(newIndex, playerName, gearData), true);
+                            this.SendMessageToServer(EventCode.Login, SendJoinMessageToServer(newIndex, playerName, gearData), true);
 
                             foreach (var item in concurrencyHandler.Players)
                             {
@@ -94,12 +94,12 @@ namespace TABG
                                 //this.SendMessageToServer(ClientEventCode.Login, new PlayerHandler().BroadcastPlayerJoin((byte)item.Key, item.Value.Name, item.Value.GearData), true);
 
                                 // broadcast to ALL players
-                                item.Value.PendingBroadcastPackets.Add(new Packet(ClientEventCode.Login, SendLoginMessageToServer(newIndex, playerName, gearData)));
+                                item.Value.PendingBroadcastPackets.Add(new Packet(EventCode.Login, SendLoginMessageToServer(newIndex, playerName, gearData)));
                             }
 
-                                this.SendMessageToServer(ClientEventCode.PlayerDead, new PlayerHandler().SendNotification(0, "WELCOME - RUNNING COMMUNITY SERVER V1.TEST"), true);
+                                this.SendMessageToServer(EventCode.PlayerDead, new PlayerHandler().SendNotification(0, "WELCOME - RUNNING COMMUNITY SERVER V1.TEST"), true);
                             return;
-                        case ClientEventCode.ChatMessage:
+                        case EventCode.ChatMessage:
                             var playerIndex = binaryReader.ReadByte(); // or ReadInt32(), depending on the type of PlayerIndex
                             var messageLength = binaryReader.ReadByte();
                             var messageBytes = binaryReader.ReadBytes(messageLength);
@@ -117,24 +117,24 @@ namespace TABG
 
                             if((handler.notification != null) && (handler.notification != ""))
                             {
-                                this.SendMessageToServer(ClientEventCode.PlayerDead, new PlayerHandler().SendNotification(playerIndex, handler.notification), true);
+                                this.SendMessageToServer(EventCode.PlayerDead, new PlayerHandler().SendNotification(playerIndex, handler.notification), true);
                             }
 
                             return;
-                        case ClientEventCode.RequestItemThrow:
-                            this.BroadcastPacket(ClientEventCode.ItemThrown, Throwables.ClientRequestThrow(binaryReader), true);
+                        case EventCode.RequestItemThrow:
+                            this.BroadcastPacket(EventCode.ItemThrown, Throwables.ClientRequestThrow(binaryReader), true);
                             return;
-                        case ClientEventCode.RequestItemDrop:
-                            this.BroadcastPacket(ClientEventCode.ItemDrop, Droppables.ClientRequestDrop(binaryReader, weaponConcurrencyHandler), true);
+                        case EventCode.RequestItemDrop:
+                            this.BroadcastPacket(EventCode.ItemDrop, Droppables.ClientRequestDrop(binaryReader, weaponConcurrencyHandler), true);
                             return;
-                        case ClientEventCode.RequestWeaponPickUp:
-                            this.BroadcastPacket(ClientEventCode.WeaponPickUpAccepted, Droppables.ClientRequestPickUp(binaryReader, weaponConcurrencyHandler), true);
+                        case EventCode.RequestWeaponPickUp:
+                            this.BroadcastPacket(EventCode.WeaponPickUpAccepted, Droppables.ClientRequestPickUp(binaryReader, weaponConcurrencyHandler), true);
                             return;
-                        case ClientEventCode.PlayerUpdate:
+                        case EventCode.PlayerUpdate:
                             // this packet is different because it can have an unlimited amount of subpackets
                             UpdatePacket updatePacket = new PlayerHandler().PlayerUpdate(binaryReader, buffer.Length, concurrencyHandler);
 
-                            this.SendMessageToServer(ClientEventCode.PlayerUpdate, updatePacket.Packet, true);
+                            this.SendMessageToServer(EventCode.PlayerUpdate, updatePacket.Packet, true);
 
                             // have to do this so enumeration is safe
                             List<Packet> packetList = updatePacket.BroadcastPackets.PendingBroadcastPackets;
@@ -148,27 +148,27 @@ namespace TABG
                             updatePacket.BroadcastPackets.PendingBroadcastPackets = new List<Packet>();
 
                             return;
-                        case ClientEventCode.WeaponChange:
-                            this.BroadcastPacket(ClientEventCode.WeaponChanged, new PlayerHandler().PlayerChangedWeapon(binaryReader), true);
+                        case EventCode.WeaponChange:
+                            this.BroadcastPacket(EventCode.WeaponChanged, new PlayerHandler().PlayerChangedWeapon(binaryReader), true);
                             return;
-                        case ClientEventCode.PlayerFire:
+                        case EventCode.PlayerFire:
                             new PlayerHandler().PlayerFire(binaryReader, buffer.Length, concurrencyHandler);
                             return;
-                        case ClientEventCode.RequestSyncProjectileEvent:
-                            this.BroadcastPacket(ClientEventCode.SyncProjectileEvent, new PlayerHandler().ClientRequestProjectileSyncEvent(concurrencyHandler, binaryReader, buffer.Length), true);
+                        case EventCode.RequestSyncProjectileEvent:
+                            this.BroadcastPacket(EventCode.SyncProjectileEvent, new PlayerHandler().ClientRequestProjectileSyncEvent(concurrencyHandler, binaryReader, buffer.Length), true);
                             return;
-                        case ClientEventCode.RequestAirplaneDrop:
-                            this.BroadcastPacket(ClientEventCode.PlayerAirplaneDropped, new PlayerHandler().RequestAirplaneDrop(binaryReader), true);
+                        case EventCode.RequestAirplaneDrop:
+                            this.BroadcastPacket(EventCode.PlayerAirplaneDropped, new PlayerHandler().RequestAirplaneDrop(binaryReader), true);
                             return;
                         // damage event breaks damage for some reason
-                        case ClientEventCode.DamageEvent:
+                        case EventCode.DamageEvent:
                             new PlayerHandler().PlayerDamagedEvent(concurrencyHandler, binaryReader);
                             return;
-                        case ClientEventCode.RequestBlessing:
-                            this.BroadcastPacket(ClientEventCode.BlessingRecieved, new PlayerHandler().RequestBlessingEvent(binaryReader), true);
+                        case EventCode.RequestBlessing:
+                            this.BroadcastPacket(EventCode.BlessingRecieved, new PlayerHandler().RequestBlessingEvent(binaryReader), true);
                             return;
-                        case ClientEventCode.RequestHealthState:
-                            this.BroadcastPacket(ClientEventCode.PlayerHealthStateChanged, new PlayerHandler().RequestHealthState(concurrencyHandler, binaryReader), true);
+                        case EventCode.RequestHealthState:
+                            this.BroadcastPacket(EventCode.PlayerHealthStateChanged, new PlayerHandler().RequestHealthState(concurrencyHandler, binaryReader), true);
                             return;
                         default:
                             return;
@@ -178,7 +178,7 @@ namespace TABG
         }
 
 
-        private void BroadcastPacket(ClientEventCode eventCode, byte[] playerData, bool unused)
+        private void BroadcastPacket(EventCode eventCode, byte[] playerData, bool unused)
         {
             foreach (var item in concurrencyHandler.Players)
             {
@@ -358,7 +358,7 @@ namespace TABG
             return sendByte;
         }
 
-        private void SendMessageToServer(ClientEventCode code, byte[] buffer, bool reliable)
+        private void SendMessageToServer(EventCode code, byte[] buffer, bool reliable)
         {
             ENet.Packet packet = default(ENet.Packet);
             byte[] array = new byte[buffer.Length + 1];

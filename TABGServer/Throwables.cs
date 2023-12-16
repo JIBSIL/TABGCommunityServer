@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TABG
+namespace TABGCommunityServer
 {
     internal class Throwables
     {
