@@ -37,7 +37,7 @@ class TABGServer
             {
                 //Task.Run(TABGEmulationClient);
                 oneTimeClientStart = true;
-                Console.WriteLine("Server Started!");
+                Console.WriteLine($"Server Started on port {port}!");
             }
             bool polled = false;
 
