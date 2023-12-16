@@ -22,5 +22,23 @@ jobs:
         dotnet-version: 6.0.x
     - name: Restore dependencies
       run: dotnet restore
-    - name: Build
-      run: dotnet build --configuration Release
+    - name: Build for linux
+      run: dotnet publish -r win-x64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true --self-contained true --configuration Release
+    - name: Build for windows
+      run: dotnet publish -r linux-x64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true --self-contained true --configuration Release
+    - name: Build for macos
+      run: dotnet publish -r osx-x64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true --self-contained true --configuration Release
+    - name: Upload a Build Artifact
+    # upload artifacts
+    - uses: actions/upload-artifact@v4
+      with:
+        name: macOS release
+        path: TABGServer/bin/Debug/net7.0/osx-x64/publish/TABG
+    - uses: actions/upload-artifact@v4
+      with:
+        name: linux release
+        path: TABGServer/bin/Debug/net7.0/linux-x64/publish/TABG
+    - uses: actions/upload-artifact@v4
+      with:
+        name: windows release
+        path: TABGServer/bin/Debug/net7.0/win-x64/publish/TABG.exe
