@@ -28,7 +28,6 @@ jobs:
       run: dotnet publish -r linux-x64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true --self-contained true --configuration Release
     - name: Build for macos
       run: dotnet publish -r osx-x64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true --self-contained true --configuration Release
-    - name: Upload a Build Artifact
     # upload artifacts
     - uses: actions/upload-artifact@v4
       with:
