@@ -1,0 +1,347 @@
+Index, Name, Class/Type
+0, .45 ACP, Ammo
+1, Big Ammo, Ammo
+2, Bolts, Ammo
+3, Money Ammo, Ammo
+4, Musket Ammo, Ammo
+5, No Ammo, Ammo
+6, Normal Ammo, Ammo
+7, Rocket Ammo, Ammo
+8, Shotgun Ammo, Ammo
+9, Small Ammo, Ammo
+10, Soul, Soul
+11, Taser Ammo, Ammo
+12, Water Ammo, Ammo
+13, Lv0 JetpackArmor, Armor
+14, Lv1 Safety Vest, Armor
+15, Lv2 Kevlar Vest, Armor
+16, Lv3 Big Boy Kevlar Vest, Armor
+17, Lv4 Heavy Armor, Armor
+
+18, Banana Armor, Armor
+19, Lv5 Pickle Armor, Armor
+20, 0.5xScope, Scope/Attachment
+21, 2xScope, Scope/Attachment
+22, 4xScope, Scope/Attachment
+23, 8xScope, Scope/Attachment
+24, Compensator, Muzzle/Attachment
+25, Damage Analyzer, Utility/Attachment
+26, Healing Barrel, Muzzle/Attachment
+27, Health Analyzer, Utility/Attachment
+28, Heavy Barrel, Muzzle/Attachment
+29, Laser Sight, Utility/Attachment
+30, Double Barrel, Muzzle/Attachment
+31, Fast Barrel, Muzzle/Attachment
+32, Accuracy Barrel, Muzzle/Attachment
+33, Fire Rate Barrel, Muzzle/Attachment
+34, Big Slow Bullet Barrel, Muzzle/Attachment
+35, Periscope Barrel, Muzzle/Attachment
+
+36, Periscope, Scope/Attachment
+37, Recycler, Utility/Attachment
+38, Red Dot, Scope/Attachment
+39, Suppressor, Muzzle/Attachment
+40, Suppressor002, Muzzle/Attachment
+41, Tazer Barrel, Muzzle/Attachment
+42, Common bloodlust, Blessing
+43, Common cardio, Blessing
+44, Common dash, Blessing
+45, Common health, Blessing
+46, Common ice, Blessing
+47, Common jump, Blessing
+48, Common posion, Blessing
+49, Common recycling, Blessing
+50, Common regeneration, Blessing
+51, Common relax, Blessing
+52, Common shield, Blessing
+53, Common speed, Blessing
+
+54, Common spray, Blessing
+55, Common storm, Blessing
+56, Common the hunt, Blessing
+57, Common vampire, Blessing
+58, Common weapon mastery, Blessing
+59, Epic battlecry, Blessing
+60, Epic bloodlust, Blessing
+61, Epic cardio, Blessing
+62, Epic charge, Blessing
+63, Epic dash, Blessing
+64, Epic healing words, Blessing
+65, Epic health, Blessing
+66, Epic ice, Blessing
+67, Epic jump, Blessing
+68, Epic lit beats, Blessing
+69, Epic poison, Blessing
+70, Epic recycling, Blessing
+71, Epic regeneration, Blessing
+
+72, Epic relax, Blessing
+73, Epic shield, Blessing
+74, Epic small, Blessing
+75, Epic speed, Blessing
+76, Epic spray, Blessing
+77, Epic storm call, Blessing
+78, Epic storm, Blessing
+79, Epic the hunt, Blessing
+80, Epic vampire, Blessing
+81, Epic weapon mastery, Blessing
+82, Epic words of justice, Blessing
+83, Legendary battlecry, Blessing
+84, Legendary bloodlust, Blessing
+85, Legendary cardio, Blessing
+86, Legendary charge, Blessing
+87, Legendary dash, Blessing
+88, Legendary healing words, Blessing
+89, Legendary health, Blessing
+
+90, Legendary ice, Blessing
+91, Legendary jump, Blessing
+92, Legendary lit beats, Blessing
+93, Legendary poison, Blessing
+94, Legendary recycling, Blessing
+95, Legendary regeneration, Blessing
+96, Legendary relax, Blessing
+97, Legendary shield, Blessing
+98, Legendary speed, Blessing
+99, Legendary spray, Blessing
+100, Legendary storm call, Blessing
+101, Legendary storm, Blessing
+102, Legendary the hunt, Blessing
+103, Legendary vampire, Blessing
+104, Legendary weapon mastery, Blessing
+105, Legendary words of justice, Blessing
+106, Rare airstrike, Blessing
+107, Rare bloodlust, Blessing
+
+108, Rare cardio, Blessing
+109, Rare dash, Blessing
+110, Rare health, Blessing
+111, Rare ice, Blessing
+112, Rare insight, Blessing
+113, Rare jump, Blessing
+114, Rare lit beats, Blessing
+115, Rare poison, Blessing
+116, Rare pull, Blessing
+117, Rare recycling, Blessing
+118, Rare regeneration, Blessing
+119, Rare relax, Blessing
+120, Rare shield, Blessing
+121, Rare speed, Blessing
+122, Rare spray, Blessing
+123, Rare storm, Blessing
+124, Rare the hunt, Blessing
+125, Rare vampire, Blessing
+
+126, Rare weapon mastery, Blessing
+127, The assassin, Blessing
+128, The mad mechanic, Blessing
+129, Blessing pickup, None
+130, Transcention Orb, None
+131, Bandage, Healing
+132, Med Kit, Healing
+133, Lv1 Bike Helmet, Armor
+134, Lv2 Fast Motorcycle Helmet, Armor
+135, Lv2 Fastest Motorcycle Helmet, Armor
+136, Lv2 Motorcycle Helmet Open, Armor
+137, Lv2 Motorcycle Helmet, Armor
+138, Lv2 Old School Motorcycle Helmet, Armor
+139, Lv3 Grey Kevlar Helmet with Googles, Armor
+140, Lv3 Grey Kevlar Helmet, Armor
+141, Lv3 Kevlar Helmet with Googles, Armor
+142, Lv3 Kevlar Helmet, Armor
+143, Lv3 Heavy Helmet Open 1, Armor
+
+144, Lv4 Cowboy Hat, Armor
+145, Lv4 Explosiveguy Hat, Armor
+146, Lv4 Heavy Helmet Open, Armor
+147, Lv4 Heavy Helmet, Armor
+148, Lv4 Knight Helmet, Armor
+149, Lv4 Rambo Bandana, Armor
+150, Lv4 Tricorne Hat, Armor
+151, AK-2K47, NormalAmmoGun
+152, AK-47, NormalAmmoGun
+153, AUG, NormalAmmoGun
+154, Beam-AR, SmallAmmoGun
+155, Burstgun, NormalAmmoGun
+156, Famas, NormalAmmoGun
+157, Cursed Famas, NormalAmmoGun
+158, H1, NormalAmmoGun
+159, Liberating M16, NormalAmmoGun
+160, M16, NormalAmmoGun
+161, MP-44, NormalAmmoGun
+
+162, SCAR-H, NormalAmmoGun
+163, Automatic Crossbow, BoltsAmmoGun
+164, Balloon Crossbow, BoltsAmmoGun
+165, AK-47, NormalAmmoGun
+166, AK-47, NormalAmmoGun
+167, AK-47, NormalAmmoGun
+168, BOMB, MoneyAmmoGun
+169, Crossbow, BoltsAmmoGun
+170, Taser Crossbow, TaserAmmoGun
+171, Firework Crossbow, BoltsAmmoGun
+172, Gaussbow, BoltsAmmoGun
+173, Grappling hook, BoltsAmmoGun
+174, Harpoon, BoltsAmmoGun
+175, Mini Gun, BrokenGun
+176, Liberating Mini Gun, NormalAmmoGun
+177, Mega Gun, NormalAmmoGun
+178, Mini Gun, NormalAmmoGun
+179, MissileLauncher, BigAmmoGun
+
+180, MoneyStack, MoneyAmmoGun
+181, Smoke Rocket Launcher, RocketAmmoGun
+182, Rocket Launcher, RocketAmmoGun
+183, Taser Mini Gun, TaserAmmoGun
+184, The Promise, BoltsAmmoGun
+185, Water Gun, WaterAmmoGun
+186, Grenade, Grenade (Big Weird Model)
+187, BIG Healing Grenade, Grenade
+188, Black Hole Grenade, Grenade
+189, Bombardment Grenade, Grenade
+190, Bouncy Grenade, Grenade
+191, Cage Grenade, Grenade
+192, Taser Cage Grenade, Grenade
+193, Cluster Grenade, Grenade
+194, Cluster Dummy Grenade, Grenade
+195, Dummy Grenade, Grenade
+196, Fire Grenade, Grenade
+197, Grenade, Grenade
+
+198, Healing Grenade, Grenade
+199, Implosion Grenade, Grenade
+200, Knockback Grenade, Grenade
+201, BIG Knockback Grenade, Grenade
+202, Launch Pad Grenade, Grenade
+203, MGL, BigAmmoGun
+204, Orbital Tase Grenade, Grenade
+205, Orbital Strike Grenade, Grenade
+206, Poof Grenade, Grenade
+207, Shield Grenade, Grenade
+208, Smoke Grenade, Grenade
+209, Snow Storm Grenade, Grenade
+210, Splinter Grenade, Grenade
+211, Taser Splinter Grenade, Grenade
+212, Stun Grenade, Grenade
+213, Snow Storm Grenade, Grenade
+214, Dynamite, Grenade
+215, Volley Grenade, Grenade
+
+216, Wall Grenade, Grenade
+217, Browning M2, NormalAmmoGun
+218, M1918-BAR, NormalAmmoGun
+219, M8, NormalAmmoGun
+220, MG-42, NormalAmmoGun,
+221, Spell: Blinding Light, SpellBook
+222, Spell: Gravity Field, SpellBook
+223, Spell: Gust, SpellBook
+224, Spell: Healing aura, SpellBook
+225, Spell: Speed aura, SpellBook
+226, Spell: Summon rock, SpellBook
+227, Spell: Teleport, SpellBook
+228, Spell: Track, SpellBook
+229, Spell: Fireball, SpellBook
+230, Spell: Ice bold, SpellBook
+231, Spell: Magical missile, SpellBook
+232, Spell: Mirage, SpellBook
+233, Spell: Orb of sight, SpellBook
+234, Spell: Reveal, SpellBook
+235, Spell: Shockwave, SpellBook
+236, Spell: Summom tree, SpellBook
+237, Spell: Track, SpellBook (Weird Cover)
+238, Ballistic Shield, Melee
+239, Ballistic Shields, Melee
+240, Taser Ballistic Shield, Melee
+241, Baton, Melee
+242, Black Katana, Melee
+243, Boxing Glove, Melee
+244, Cleaver, Melee
+245, Crowbar, Melee
+246, Crusader Sword, Melee
+247, Taser Crusader Sword, Melee
+248, Fish, Melee
+249, Taser Fish, Melee
+250, Holy Sword, Melee
+251, Inflatable Hammer, Melee
+
+252, Jarl Axe, Melee
+253, Taser Jarl Axe, Melee
+254, Katana, Melee
+255, Knife, Melee
+256, Rapier, Melee
+257, Riot Shield, Melee
+258, Sabre, Melee
+259, Shallow Pot With Long Handel, Melee
+260, Shield, Melee
+261, Shovel, Melee
+262, Viking Axe, Melee
+263, Weights, Melee
+264, Beretta 93R, SmallAmmoGun
+265, Crossbow pistol, BoltsAmmoGun
+266, Desert Eagle, NormalAmmoGun
+267, Flintlock, MusketAmmoGun
+268, Taser Flintlock, TaserAmmoGun
+269, Auto Revolver, NormalAmmoGun
+
+270, Wind up pistol, SmallAmmoGun
+271, G18c, SmallAmmoGun
+272, Glue Gun, SmallAmmoGun
+273, Hand Gun, SmallAmmoGun
+274, HandCannon, MusketAmmoGun
+275, Liberating m1911, SmallAmmoGun
+276, Luger-P08, SmallAmmoGun
+277, m1911, SmallAmmoGun
+278, Real Gun, NormalAmmoGun
+279, Really Big Deagle, NormalAmmoGun
+280, Revolver, NormalAmmoGun
+281, Holy Revolver, NormalAmmoGun
+282, Revolver, NormalAmmoGun
+283, Hardballer, SmallAmmoGun
+284, Taser, TaserAmmoGun
+285, Beam-DMR, SmallAmmoGun
+286, FAL, NormalAmmoGun
+287, Garand, BigAmmoGun
+
+288, Liverating Garand, BigAmmoGun
+289, M14, NormalAmmoGun
+290, S7, NormalAmmoGun
+291, Winchester-Model1886, BigAmmoGun
+292, AA-12, ShotgunAmmoGun
+293, Blunderbuss, MusketAmmoGun
+294, Sawed-off Shotgun, ShotgunAmmoGun
+295, FlyingBlunderbuss, MusketAmmoGun
+296, Liberating AA-12, ShotgunAmmoGun
+297, Mossberg-500, ShotgunAmmoGun
+298, Mossberg-5000, ShotgunAmmoGun
+299, Taser Mossberg-500, TaserAmmoGun
+300, Rainmaker, ShotgunAmmoGun
+301, The Arnold, ShotGunAmmoGun
+302, AKS-74U, SmallAmmoGun
+303, AWPS-74U, BigAmmoGun
+304, Money maker mac, SmallAmmoGun
+305, Glockinator, SmallAmmoGun
+
+306, Liberating M1a1-Thompson, SmallAmmoGun
+307, M1a1-Thompson, SmallAmmoGun
+308, Mac-10, SmallAmmoGun
+309, MP-40, SmallAmmoGun
+310, MP5-K, SmallAmmoGun
+311, P90, SmallAmmoGun
+312, PPSH-41, SmallAmmoGun
+313, Tec-9, SmallAmmoGun
+314, UMP-45, SmallAmmoGun
+315, Vector, SmallAmmoGun
+316, Z4, SmallAmmoGun
+317, AWP, BigAmmoGun
+318, Taser AWP, TaserAmmoGun
+319, Barrett, BigAmmoGun
+320, Beam-Sniper, SmallAmmoGun
+321, Kar98K, BigAmmoGun
+322, Liberating Barrett, BigAmmoGun
+323, Musket, MusketAmmoGun
+
+324, Taser Musket, TaserAmmoGun
+325, Really Big Barret, BigAmmoGun
+326, Sniper Shotgun..?, ShotgunAmmoGun
+327, Double Shot, BigAmmoGun
+328, VSS, SmallAmmoGun
