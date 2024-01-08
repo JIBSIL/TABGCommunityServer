@@ -1,6 +1,5 @@
 ﻿public enum ItemIDs : Int32
 {
-    //.45 ACP                                   = 0,
     fortyFive_ACP                               = 0,
     Big_Ammo                                    = 1,
     Bolts                                       = 2,

@@ -15,7 +15,9 @@ namespace TABGCommunityServer
 
         public void SpawnWeapon(Weapon weapon)
         {
-            WeaponDB[weapon.Id] = weapon;
+            //WeaponDB[weapon.Id] = weapon;
+            WeaponDB[weapon.Type] = weapon;
+
             CurrentID++;
         }
 

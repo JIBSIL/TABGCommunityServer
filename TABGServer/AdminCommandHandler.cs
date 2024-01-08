@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -177,6 +179,7 @@ namespace TABGCommunityServer
                         this.notification = "Player state change ERROR!";
                     }
                     return;
+
                 case "gamestate":
                     if (parts.Length < 2)
                     {
@@ -211,6 +214,39 @@ namespace TABGCommunityServer
                     this.packetData = new PlayerHandler().SendNotification(executor, "GAME STATE CHANGED!");
                     this.code = EventCode.PlayerDead;
                     this.shouldSendPacket = true;
+                    return;
+                case "ring":
+                    // Ring Update
+                    // 1 = Set Size, and Position
+                    // 0 = TimeTraveled (sync time)
+                    // 2 = Start moving ring
+
+                    // parts[1] is the Ring Update Type # Byte
+                    // parts[2] is either the "Time Travelled" or the "Ring Index" in "Set Size & Rotation" # Single
+                    // parts[3] is the X if "Set Size & Position" # Single
+                    // parts[4] is the Y if "Set Size & Position" # Single
+                    // parts[5] is the Z if "Set Size & Position" # Single
+                    // parts[6] is the Size if "Set Size & Position" # Single
+
+                    while(parts.Length < 7)
+                    {
+                        parts = parts.Concat(new string[] { "0" }).ToArray();
+                    }
+
+                    byte[] sendByte = GameHandler.GenerateRingPacket(
+                        Byte.Parse(parts[1]),
+                        Byte.Parse(parts[2]),
+                        Single.Parse(parts[3]),
+                        Single.Parse(parts[4]),
+                        Single.Parse(parts[5]), 
+                        Single.Parse(parts[6]));
+
+                    this.packetData = sendByte;
+                    this.code = EventCode.RingUpdate;
+                    this.shouldSendPacket = true;
+                    return;
+                case "start":
+                    TABGServer.startGame = true;
                     return;
                 default: return;
             }

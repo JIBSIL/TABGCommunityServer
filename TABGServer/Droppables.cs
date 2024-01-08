@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace TABGCommunityServer
 {
@@ -24,7 +26,8 @@ namespace TABGCommunityServer
             var z = binaryReader.ReadSingle();
 
             int networkID = weaponConcurrencyHandler.CurrentID;
-            Weapon weapon = new Weapon(networkID, itemID, itemCount, (x, y, z));
+            //Weapon weapon = new Weapon(networkID, itemID, itemCount, (x, y, z));
+            Weapon weapon = new Weapon(itemID, networkID, itemCount, (x, y, z));
             weaponConcurrencyHandler.SpawnWeapon(weapon);
 
             return SendItemDropPacket(networkID, itemID, itemCount, (x, y, z));
@@ -62,6 +65,20 @@ namespace TABGCommunityServer
             // item slot of player
             var itemSlot = binaryReader.ReadByte();
 
+            /*
+            Console.WriteLine(
+                "{" + string.Join(",", weaponConcurrencyHandler.WeaponDB.Select(kv => kv.Key + "=" + kv.Value).ToArray()) + "}"
+                );
+            Console.WriteLine(netIndex);
+            foreach (var item in weaponConcurrencyHandler.WeaponDB)
+            {
+                Console.WriteLine(item.Value.Type);
+            }
+            int indx = weaponConcurrencyHandler.WeaponDB.FirstOrDefault(x => x.Value.Type == netIndex).Key;
+            Weapon weapon = weaponConcurrencyHandler.WeaponDB[indx];
+            */
+            // if "WeaponDB[weapon.Type] = weapon;" is "WeaponDB[weapon.Id] = weapon;" in "WeaponConcurrencyHandler.cs"
+            
             Weapon weapon = weaponConcurrencyHandler.WeaponDB[netIndex];
 
             // clean up DB

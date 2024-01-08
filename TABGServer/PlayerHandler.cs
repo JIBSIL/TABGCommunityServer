@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.IO;
 using System.Linq;
 using System.Numerics;
@@ -109,19 +110,19 @@ namespace TABGCommunityServer
                     }
 
                     // give LP grenade
-                    binaryWriterStream.Write((Int32)202);
+                    binaryWriterStream.Write((Int32)ItemIDs.Launch_Pad_Grenade);
                     binaryWriterStream.Write((Int32)1);
 
                     // give vector
-                    binaryWriterStream.Write((Int32)315);
+                    binaryWriterStream.Write((Int32)ItemIDs.Vector);
                     binaryWriterStream.Write((Int32)999);
 
                     // give AWP
-                    binaryWriterStream.Write((Int32)317);
+                    binaryWriterStream.Write((Int32)ItemIDs.AWP);
                     binaryWriterStream.Write((Int32)1);
 
                     // give deagle
-                    binaryWriterStream.Write((Int32)266);
+                    binaryWriterStream.Write((Int32)ItemIDs.Desert_Eagle);
                     binaryWriterStream.Write((Int32)1);
 
                     // Client requires this, but it's redundant
@@ -390,6 +391,8 @@ namespace TABGCommunityServer
             var y = binaryReader.ReadSingle();
             var z = binaryReader.ReadSingle();
 
+            //Console.WriteLine($"I, player index {index.ToString()}, am at the location {x}, {y}, {z}");
+
             byte[] sendByte = new byte[128];
             using (MemoryStream writerMemoryStream = new MemoryStream(sendByte))
             {
@@ -592,6 +595,93 @@ namespace TABGCommunityServer
             return sendByte;
         }
 
+        public void RingDeathEvent(PlayerConcurencyHandler playerConcurencyHandler, BinaryReader binaryReader)
+        {
+            byte deadUser = binaryReader.ReadByte();
+
+            byte[] killUserBytes = new PlayerHandler().KillPlayer(deadUser, deadUser, "The Wall");
+            foreach (var item in playerConcurencyHandler.Players)
+            {
+                item.Value.PendingBroadcastPackets.Add(new Packet(EventCode.PlayerDead, killUserBytes));
+            }
+        }
+
+        public byte[] GenerateRespawnPacket(byte playerIndex)
+        {
+            byte[] respawnBytes = new byte[512];
+
+            using (MemoryStream writerMemoryStream = new MemoryStream(respawnBytes))
+            {
+                using (BinaryWriter binaryWriterStream = new BinaryWriter(writerMemoryStream))
+                {
+                    // How many players we are respawning?
+                    binaryWriterStream.Write(0);
+
+                    // Player Index
+                    binaryWriterStream.Write(playerIndex);
+
+                    // New Player Index ( I'm going to keep this the same )
+                    binaryWriterStream.Write(playerIndex);
+
+                    // Health
+                    binaryWriterStream.Write((Single)100f);
+
+                    // Position X, Y, and Z
+                    //Console.WriteLine($"PlayerHandler here, respawning from boss fight. Checking all circle positions!\n {TABGServer.centers.Length} {TABGServer.centers.ToString()}");
+                    int[] pos = TABGServer.centers[TABGServer.currentRingIndex - 1];
+
+                    binaryWriterStream.Write(pos[0]);
+                    binaryWriterStream.Write(150);
+                    binaryWriterStream.Write(pos[1]);
+
+                    // Rotation
+                    binaryWriterStream.Write((Single)0);
+
+                    // Curse ID ~ 255 = None
+                    binaryWriterStream.Write(255);
+                }
+            }
+
+            return respawnBytes;
+        }
+
+        public byte[] TaseEffectPlayer(byte playerIndex)
+        {
+            // Tase effect
+            byte[] taseEffectBytes = new byte[512];
+
+            using (MemoryStream writerMemoryStream = new MemoryStream(taseEffectBytes))
+            {
+                using (BinaryWriter binaryWriterStream = new BinaryWriter(writerMemoryStream))
+                {
+                    // player index
+                    binaryWriterStream.Write(playerIndex);
+
+                    // Weapon Effect
+                    binaryWriterStream.Write((byte)WeaponEffect.Tase);
+
+                    // Range Multiplier
+                    binaryWriterStream.Write((Single)1);
+                }
+            }
+            return taseEffectBytes;
+        }
+
+        public byte[][] BossFightResultEvent(PlayerConcurencyHandler playerConcurencyHandler, BinaryReader binaryReader)
+        {
+            bool didWin = binaryReader.ReadBoolean();
+            byte difficulty = binaryReader.ReadByte();
+            Console.WriteLine($"Boss fight Result ~ Win : {didWin}, Difficulty : {difficulty}");
+            //if (didWin == false) return new byte[0][];
+
+            byte playerIndex = 0;
+            
+            return new byte[][] {
+                GenerateRespawnPacket(playerIndex),
+                TaseEffectPlayer(playerIndex)
+            };
+        }
+
         public void PlayerDamagedEvent(PlayerConcurencyHandler playerConcurrencyHandler, BinaryReader binaryReader)
         {
             byte[] sendByte = new byte[256];
@@ -622,6 +712,15 @@ namespace TABGCommunityServer
                     var health = binaryReader.ReadSingle();
                     binaryWriterStream.Write(health);
                     player.Health = health;
+
+                    if(health <= 0)
+                    {
+                        byte[] killUserBytes = KillPlayer(victim, attacker, player2.Name);
+                        foreach (var item in playerConcurrencyHandler.Players)
+                        {
+                            item.Value.PendingBroadcastPackets.Add(new Packet(EventCode.PlayerDead, killUserBytes));
+                        }
+                    }
 
                     Console.WriteLine("Attacker: " + attacker + ". Victim: " + victim + ". New health value: " + health);
 
