@@ -17,6 +17,7 @@ namespace TABGxGUI
         public static bool ShouldInitialize = false;
         public static TunnelState TunnelOption = TunnelState.Uninitialized;
         public static GameObject HideIp;
+        public static ServerWrapper Server;
 
         private static GameObject OptionsMenu;
 
@@ -50,6 +51,7 @@ namespace TABGxGUI
             System.Threading.Thread.Sleep(1000);
 
             MatchmakingHandler.Instance.UpdateMatchmakingState(Landfall.Network.JoinState.Searching);
+            CreateKillServerMenu();
 
             ServerConnector.Instance.ConnectToServerIP("127.0.0.1", 9000, "");
             Task.Run(() => {
@@ -66,6 +68,10 @@ namespace TABGxGUI
 
             newObject.name = "HideIp";
             newObject.GetComponentsInChildren<TMPro.TextMeshProUGUI>()[0].GetTextInfo("HIDE IP?");
+
+            // set default to off
+            newObject.GetComponent<OptionsButton>().valueNames[0] = "OFF";
+            newObject.GetComponent<OptionsButton>().valueNames[1] = "ON";
 
             HideIp = newObject;
         }
@@ -194,8 +200,62 @@ namespace TABGxGUI
             });
         }
 
+        public static void DeleteKillServerMenu()
+        {
+            GameObject killServerButton = GameObject.Find("/MainMenuCamPivot/MainMenuCam/UICAM/Canvas/MainScreen/LowerLeftButtons/KillServer");
+            if (killServerButton != null)
+            {
+                killServerButton.name = "unused";
+                killServerButton.SetActive(false);
+                UnityEngine.Object.Destroy(killServerButton);
+            }
+        }
+
+        public static void CreateKillServerMenu()
+        {
+            GameObject x = GameObject.Find("/MainMenuCamPivot/MainMenuCam/UICAM/Canvas/MainScreen/LowerLeftButtons/Quit");
+            GameObject y = GameObject.Find("/MainMenuCamPivot/MainMenuCam/UICAM/Canvas/MainScreen/LowerLeftButtons");
+
+            RectTransform component = x.GetComponent<RectTransform>();
+            component.sizeDelta = new Vector2(component.sizeDelta.x, component.sizeDelta.y + 60f);
+
+            GameObject newObject = UnityEngine.Object.Instantiate<GameObject>(x, y.transform);
+            // make server creator top button
+            newObject.transform.SetSiblingIndex(1);
+            newObject.name = "KillServer";
+
+            var text = newObject.GetComponentsInChildren<TMPro.TextMeshProUGUI>()[0];
+            text.GetTextInfo("KILL SERVER");
+
+            var button = newObject.GetComponent<UnityEngine.UI.Button>();
+            var onClickEvent = button.onClick;
+
+            onClickEvent.m_Calls.Clear();
+            onClickEvent.m_PersistentCalls.Clear();
+
+            onClickEvent.AddListener(() =>
+            {
+                DeleteKillServerMenu();
+                if (TABGxUI.Server != null)
+                {
+                    TABGxUI.Server.Server.Kill();
+                    Debug.Log("Server killed");
+                    Singleton<GlobalCanvasSingleton>.Instance.UIMessageBox.QueueMessage("Server has been terminated", null);
+                } else
+                {
+                    Debug.Log("Wrapper was not found");
+                    Singleton<GlobalCanvasSingleton>.Instance.UIMessageBox.QueueMessage("Error: Server was not found!", null);
+                }
+            });
+        }
+
         public static void Start()
         {
+            // test if server is already running
+            if (Server != null)
+            {
+                CreateKillServerMenu();
+            }
 
             // preload options menu
             GameObject x2 = GameObject.Find("MainMenuCamPivot/MainMenuCam/UICAM/Canvas/OptionsMenu");

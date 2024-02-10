@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace TABG
 {
-    internal class ServerWrapper
+    public class ServerWrapper
     {
         public ServerInstance Server { get; set; }
         public bool Error { get; set; }
 
-        public ServerWrapper(bool error, ServerInstance? server)
+        public ServerWrapper(bool error, ServerInstance server)
         {
             if(server != null)
             {

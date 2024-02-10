@@ -17,6 +17,7 @@ namespace TABGxGUI
     {
 
         private bool privateIp = false;
+        private bool devtools = false;
 
         private void Awake()
         {
@@ -35,12 +36,16 @@ namespace TABGxGUI
         {
             if (TABGxUI.HideIp != null)
             {
-                if(TABGxUI.HideIp.GetComponent<OptionsButton>().GetFieldValue<TMPro.TextMeshProUGUI>("valueText").text == "ON")
+                if (TABGxUI.HideIp.GetComponent<OptionsButton>() != null && TABGxUI.HideIp.GetComponent<OptionsButton>().GetFieldValue<TMPro.TextMeshProUGUI>("valueText") != null)
                 {
-                    privateIp = true;
-                } else
-                {
-                    privateIp = false;
+                    if (TABGxUI.HideIp.GetComponent<OptionsButton>().GetFieldValue<TMPro.TextMeshProUGUI>("valueText").text == "ON")
+                    {
+                        privateIp = true;
+                    }
+                    else
+                    {
+                        privateIp = false;
+                    }
                 }
             }
 

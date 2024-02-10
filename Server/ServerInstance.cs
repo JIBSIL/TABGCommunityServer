@@ -8,7 +8,7 @@ using TABGxGUI;
 
 namespace TABG
 {
-    internal class ServerInstance
+    public class ServerInstance
     {
         public readonly ushort Port = 9700;
         private string Owner;

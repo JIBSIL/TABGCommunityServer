@@ -4,6 +4,7 @@ using System;
 using System.Diagnostics;
 using System.Text;
 using ENet;
+using TABGxGUI;
 using UnityEngine;
 
 public static class TABGServer
@@ -45,7 +46,8 @@ public static class TABGServer
         configuration.Initialized = true;
 
         UnityEngine.Debug.Log("Booting first server on port 9000...");
-        serverConcurrencyHandler.CreateServer(players, gamemode, autostart);
+        ServerWrapper wrapper = serverConcurrencyHandler.CreateServer(players, gamemode, autostart);
+        TABGxUI.Server = wrapper;
 
         timer.Stop();
         var timeTaken = timer.ElapsedMilliseconds;
