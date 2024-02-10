@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>TABGxGUI</AssemblyName>
+    <Description>TABG Plugin to enable server creation via GUI</Description>
+    <Version>0.1.3</Version>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+	
+  <ItemGroup>
+    <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
+    <PackageReference Include="BepInEx.Core" Version="5.*" />
+    <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
+    <PackageReference Include="Open.NAT" Version="2.1.0" />
+    <PackageReference Include="UnityEngine.Modules" Version="2021.3.22" IncludeAssets="compile" />
+  </ItemGroup>
+	
+  <PropertyGroup>
+	  <ImplicitUsings>enable</ImplicitUsings>
+	  <LangVersion>latest</LangVersion>
+    <PublishSingleFile>true</PublishSingleFile>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+	  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+	
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>E:\TotallyAccurateBattlegrounds\TotallyAccurateBattlegrounds_Data\Managed\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Sirenix.Serialization">
+      <HintPath>E:\TotallyAccurateBattlegrounds\TotallyAccurateBattlegrounds_Data\Managed\Sirenix.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>E:\TotallyAccurateBattlegrounds\TotallyAccurateBattlegrounds_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+	  <Reference Include="UnityEngine.UI">
+		  <HintPath>E:\TotallyAccurateBattlegrounds\TotallyAccurateBattlegrounds_Data\Managed\UnityEngine.UI.dll</HintPath>
+	  </Reference>
+  </ItemGroup>
+<ItemGroup>
+		<Reference Include="ENet">
+			<HintPath>E:\TABGx-GUI\DLLs\ENet-CSharp.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+</Project>
