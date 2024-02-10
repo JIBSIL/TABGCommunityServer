@@ -8,7 +8,7 @@ Using the TABGxGUI mod, you will be able to run custom servers for your friends 
 
 Getting started is simple. Just follow these steps:
 1. Download the client patcher from [GitHub Releases](https://github.com/JIBSIL/TABGCommunityServer/releases). It should be called "extractor.exe"
-2. Follow the steps in 
+2. Follow the steps in https://www.youtube.com/watch?v=vWdDRf7fquU
 
 ## Building
 
